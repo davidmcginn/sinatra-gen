@@ -2,7 +2,11 @@
 
 ## Installation
 
-Use shell script:
+If first use, use:
+	
+	gem install sinatra-gen
+
+.. or if rebuilding, use shell script:
 
 	./rebuild.sh
 
