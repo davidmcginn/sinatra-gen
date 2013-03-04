@@ -1,6 +1,62 @@
 #!/usr/bin/env ruby
 
 require 'sinatra-gen'
+require 'fileutils'
 
-puts "TEST"
-puts ARGV if !ARGV.nil?
+if ARGV.empty?
+  abort "Please specify a name for your Sinatra app"
+elsif ARGV.length > 1
+  abort "Please only specify one name"
+elsif File.exists?(ARGV.first)
+  abort "Project #{ARGV.first} already exists"
+end
+
+project_dir = ARGV.first
+
+dirs = [
+			"#{project_dir}/config/environments",
+			"#{project_dir}/docs",
+			"#{project_dir}/lib",
+			"#{project_dir}/config",
+			"#{project_dir}/vendor/cache",
+		]
+
+FileUtils.makedirs(
+	dirs.each { |d|
+	 puts "Creating directory: #{d}\n"
+	 d
+	}
+)
+
+# TODO: Fix this mess
+# TODO: Add more files
+files = {
+
+"#{project_dir}/config/environments/development.rb.sample" =>
+
+'
+=begin
+	Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum risus dolor, fermentum non volutpat ac, aliquam nec justo. Nam ultrices justo nec nibh pellentesque in egestas leo blandit. Etiam nibh felis, porta sit amet laoreet et, pulvinar sit amet turpis. Vivamus a laoreet magna. Donec dictum massa eu leo adipiscing ut laoreet leo cursus. Etiam malesuada, leo ut tempor lacinia, dui sem blandit quam, sit amet vehicula turpis enim non erat. Nunc mauris risus, convallis vel molestie ac, ultrices in lacus. Donec et lorem et metus pellentesque eleifend. Maecenas nulla leo, porta varius ullamcorper et, mollis at enim. Cras rutrum malesuada metus, vitae semper nulla fermentum id. Nullam sagittis malesuada placerat. Aliquam quis nunc mi, id laoreet enim. Donec congue laoreet imperdiet. Praesent id sapien at tellus vehicula commodo. Etiam at odio quis leo tincidunt porta. Etiam nec gravida enim. 
+=end
+',
+
+"#{project_dir}/config/environments/production.rb" =>
+
+'
+=begin
+	PRODUCTION: Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum risus dolor, fermentum non volutpat ac, aliquam nec justo. Nam ultrices justo nec nibh pellentesque in egestas leo blandit. Etiam nibh felis, porta sit amet laoreet et, pulvinar sit amet turpis. Vivamus a laoreet magna. Donec dictum massa eu leo adipiscing ut laoreet leo cursus. Etiam malesuada, leo ut tempor lacinia, dui sem blandit quam, sit amet vehicula turpis enim non erat. Nunc mauris risus, convallis vel molestie ac, ultrices in lacus. Donec et lorem et metus pellentesque eleifend. Maecenas nulla leo, porta varius ullamcorper et, mollis at enim. Cras rutrum malesuada metus, vitae semper nulla fermentum id. Nullam sagittis malesuada placerat. Aliquam quis nunc mi, id laoreet enim. Donec congue laoreet imperdiet. Praesent id sapien at tellus vehicula commodo. Etiam at odio quis leo tincidunt porta. Etiam nec gravida enim. 
+=end
+',
+"#{project_dir}/config.ru" => '',
+"#{project_dir}/#{project_dir}.rb" => 
+'
+class Test
+
+end
+'
+}
+
+files.each do |file, content|
+   puts "Creating file: #{file}\n"
+   File.open(file, "w") { |f| f.write(content) }
+end
